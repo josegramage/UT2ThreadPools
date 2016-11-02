@@ -34,36 +34,35 @@ public class DemoDescarga {
 		// se crea el ExecutorService con 2 threads
 		ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
-		//se crea el CompletionService
+		// se crea el CompletionService
 		CompletionService<String> pool = new ExecutorCompletionService<String>(threadPool);
 
-		//random para el tiempo de descarga
+		// random para el tiempo de descarga
 		Random rnd = new Random();
-		
-		
+
 		for (int i = 0; i < urlsArchivos.length; i++) {
 			String urls = urlsArchivos[i];
-			
-			//tiempo de descarga entre 10 y 20 segundos
+
+			// tiempo de descarga entre 10 y 20 segundos
 			int tiempo = (int) (rnd.nextDouble() * 10000 + 11000);
-			
-			//añadimos las urls y el tiempo de descarga
-			pool.submit(new DescargaCallable(urls,tiempo));
-			
+
+			// añadimos las urls y el tiempo de descarga
+			pool.submit(new DescargaCallable(urls, tiempo));
+
 		}
 
-		//imprimimos los resultados
+		// imprimimos los resultados
 		for (int i = 0; i < urlsArchivos.length; i++) {
 			String result = pool.take().get();
 			System.out.println(result);
 			System.out.println("Estado del thread pool: ");
 			System.out.println(threadPool.toString());
 			System.out.println("--- --- ---");
-			
+
 		}
 
 		System.out.println("Se han descargado todos los archivos");
-		//se para el thread pool
+		// se para el thread pool
 		threadPool.shutdown();
 
 	}
